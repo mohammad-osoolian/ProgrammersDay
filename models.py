@@ -4,7 +4,7 @@ from datetime import datetime
 db = SQLAlchemy()
 
 class Question(db.Model):
-    __tablename__ = 'questions'
+    __tablename__ = 'question'
     
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -28,7 +28,7 @@ class Submit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     submit_time = db.Column(db.DateTime, default=datetime.utcnow)
     group_id = db.Column(db.String, nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
     answer = db.Column(db.Text, nullable=False)
     result = db.Column(db.Boolean, nullable=False)
 
