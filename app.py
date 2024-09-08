@@ -22,7 +22,7 @@ app.register_blueprint(submit_bp, url_prefix='')
 
 @app.get("/hello")
 def hello():
-    return "hiii\n"
+    return "hiii\n", 200
 
 
 if __name__ == '__main__':
