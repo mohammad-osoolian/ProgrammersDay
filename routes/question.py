@@ -88,7 +88,7 @@ def all_questions():
 
 
 
-@question_bp.get('/question-details')
+@question_bp.post('/question-details')
 def question_details():
     group = authentication_required(request)
     data = request.json
