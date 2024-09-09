@@ -7,13 +7,20 @@ from models import db, Question, Submit
 from routes.auth import auth_bp
 from routes.question import question_bp
 from routes.submit import submit_bp
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app, origins=['*'], supports_credentials=True)
 app.secret_key = b'yiwpq9853nbmc/sdkf,e.,vx%32985&&%$#@weh' # TODO: change this maybe
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contest.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = "media"
+
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # or 'Strict'
+app.config['SESSION_COOKIE_SECURE'] = True  # Enable if you're using HTTPS
+
 db.init_app(app)
 app.register_blueprint(auth_bp, url_prefix='')
 app.register_blueprint(question_bp, url_prefix='')
