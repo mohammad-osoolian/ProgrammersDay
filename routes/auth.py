@@ -6,9 +6,9 @@ from utility import authentication_required, get_key_from_json_request, get_obje
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.get("/authenticated_hello")
+@auth_bp.get("/authenticated-hello")
 def auth_hello():
-    group = authentication_required(session)
+    group = authentication_required(request)
     return "hiii " + group.group_name + "\n"
 
 @auth_bp.post("/login")
@@ -46,7 +46,7 @@ def create_group():
 
 @auth_bp.get("/group-info")
 def group_info():
-    group = authentication_required(session)
+    group = authentication_required(request)
     info = {
         'group_name': group.group_name,
         'keys': group.keys,
@@ -57,7 +57,7 @@ def group_info():
 
 @auth_bp.get("/ranking")
 def ranking():
-    group = authentication_required(session)
+    group = authentication_required(request)
     groups_query = db.session.query(
         Group.group_name,
         Group.score,

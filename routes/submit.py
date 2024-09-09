@@ -6,7 +6,7 @@ submit_bp = Blueprint('submit', __name__)
 
 @submit_bp.route('/submit', methods=['POST'])
 def submit_answer():
-    group = authentication_required(session)
+    group = authentication_required(request)
     data = request.json
     question = get_object_or_404(Question, id=decrypt_id(data['question_id'], group.id))
     if not question.is_active:

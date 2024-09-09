@@ -34,7 +34,7 @@ def create_question():
 
 @question_bp.route('/purchase-question', methods=['POST'])
 def purchase_question():
-    group = authentication_required(session)
+    group = authentication_required(request)
     data = request.json
     question = get_object_or_404(Question, id=int(decrypt_id(data['question_id'], group.id)))
     if not question.is_active:
@@ -56,7 +56,7 @@ def purchase_question():
 
 @question_bp.route('/all-questions', methods=['GET'])
 def all_questions():
-    group = authentication_required(session)
+    group = authentication_required(request)
 
     purchase_alias = aliased(Purchase)
     submit_alias = aliased(Submit)
@@ -90,7 +90,7 @@ def all_questions():
 
 @question_bp.get('/question-details')
 def question_details():
-    group = authentication_required(session)
+    group = authentication_required(request)
     data = request.json
     question = get_object_or_404(Question, id=int(decrypt_id(data['id'], group.id)))
     if not is_purchased(question.id, group.id):

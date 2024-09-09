@@ -37,13 +37,17 @@ def get_key_from_json_request(j, key):
     raise BadRequest(description="field "+key+" is missing")
 
 
-def authentication_required(session) -> Group:
-    if "group_id" not in session:
-        raise Forbidden
-    group_id = session["group_id"]
+def authentication_required(request) -> Group:
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith("GroupID "):
+        raise Forbidden("Authorization header is missing or malformed")
+
+    group_id = auth_header[len("GroupID "):].strip()
+
     gr = Group.query.filter_by(id=group_id).first()
-    if gr == None:
-        raise Forbidden
+    if gr is None:
+        raise Forbidden("Group not found")
+
     return gr
 
 def get_object_or_404(model, **kwargs):
