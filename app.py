@@ -8,6 +8,8 @@ from routes.auth import auth_bp
 from routes.question import question_bp
 from routes.submit import submit_bp
 from flask_cors import CORS
+from datetime import timedelta
+
 
 
 app = Flask(__name__)
@@ -18,8 +20,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = "media"
 
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # or 'Strict'
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Lax or 'Strict'
 app.config['SESSION_COOKIE_SECURE'] = True  # Enable if you're using HTTPS
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # Set session expiration
+app.config['SESSION_PERMANENT'] = True  # Make session persistent
 
 db.init_app(app)
 app.register_blueprint(auth_bp, url_prefix='')
