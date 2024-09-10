@@ -116,7 +116,7 @@ def question_details():
 
 @question_bp.get('/assets/<path:question_id>/<path:gid>')
 def question_assets(question_id, gid):
-    question = get_object_or_404(Question, id=int(decrypt_id(question_id, group.id)))
+    question = get_object_or_404(Question, id=int(decrypt_id(question_id, gid)))
     if not is_purchased(question.id, gid):
         return "question is not purchased", 403
     
