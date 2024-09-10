@@ -105,7 +105,7 @@ def question_details():
         'cost': question.cost,
         'score': question.score,
         'has_zip': question.zip_file_name != '',
-        'zip_file_url': f"/assets/{data['id']}",
+        'zip_file_url': f"/assets/{data['id']}/{group.id}",
         'is_purchased': is_purchased(question.id, group.id),
         'is_answerd': is_answerd(question.id, group.id)
     }
@@ -114,11 +114,10 @@ def question_details():
 
 
 
-@question_bp.get('/assets/<path:question_id>')
-def question_assets(question_id):
-    group = authentication_required(request)
+@question_bp.get('/assets/<path:question_id>/<path:gid>')
+def question_assets(question_id, gid):
     question = get_object_or_404(Question, id=int(decrypt_id(question_id, group.id)))
-    if not is_purchased(question.id, group.id):
+    if not is_purchased(question.id, gid):
         return "question is not purchased", 403
     
     response = Response()
