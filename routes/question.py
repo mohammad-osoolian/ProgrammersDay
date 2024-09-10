@@ -1,6 +1,6 @@
 from sqlalchemy.orm import aliased
 import os
-from flask import Blueprint, jsonify, request, current_app, session
+from flask import Blueprint, jsonify, request, current_app, session, Response
 
 from models import Question, Submit, db, Purchase
 from utility import *
@@ -105,7 +105,7 @@ def question_details():
         'cost': question.cost,
         'score': question.score,
         'has_zip': question.zip_file_name != '',
-        'zip_file_url': f'/statics/{question.zip_file_name}',
+        'zip_file_url': f"/assets/{data['id']}",
         'is_purchased': is_purchased(question.id, group.id),
         'is_answerd': is_answerd(question.id, group.id)
     }
@@ -113,4 +113,15 @@ def question_details():
     return jsonify(question_dict), 200
 
 
+
+@question_bp.get('/assets/<path:question_id>')
+def question_assets(question_id):
+    group = authentication_required(request)
+    question = get_object_or_404(Question, id=int(decrypt_id(question_id, group.id)))
+    if not is_purchased(question.id, group.id):
+        return "question is not purchased", 403
+    
+    response = Response()
+    response.headers['X-Accel-Redirect'] = f'/protected/{question.zip_file_name}'
+    return response
 
