@@ -27,11 +27,14 @@ def submit_answer():
         result=is_correct
     )
     db.session.add(new_submit)
-    
+    db.session.commit()
+
     group.total_submits += 1
     if is_correct:
         group.correct_submits += 1
         group.score += question.score
+        if num_correct_answers(question.id) == 2:
+            question.is_active = False
     
     db.session.commit()
     

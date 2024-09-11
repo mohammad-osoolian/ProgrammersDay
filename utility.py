@@ -62,6 +62,9 @@ def is_purchased(q_id, g_id):
 def is_answerd(q_id, g_id):
     return Submit.query.filter_by(group_id=g_id, question_id=q_id, result=True).first() != None
 
+def num_correct_answers(q_id):
+    return len(Submit.query.filter_by(question_id=q_id, result=True).all())
+
 KEY = 'K4Tz'
 def encrypt_id(q_id, g_id):
     return AESCipher(str(g_id) + KEY).encrypt(str(q_id)).decode('ascii')
