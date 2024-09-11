@@ -35,6 +35,22 @@ app.register_blueprint(submit_bp, url_prefix='')
 def hello():
     return "hiii\n", 200
 
+@app.get("/admin-panel")
+def url_manipulation_handler():
+    uid = request.args.get("uid")
+    print(uid)
+    if uid == None:
+        return "یوزر خود را وارد کنید"
+    elif uid == "4569037591":
+        return "Hichvaght"
+    elif uid == "1915500978":
+        return "شما دسترسی دیدن این اطلاعات را ندارید"
+    elif uid.isdigit():
+        return "شما هم به این اطلاعات دسترسی ندارید"
+    else:
+        return ""
+
+    return 
 
 if __name__ == '__main__':
     with app.app_context():
